@@ -7,6 +7,7 @@ import CartDrawer from './components/CartDrawer';
 import Catalog from './pages/Catalog';
 import Payment from './pages/Payment';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin'; // NEW: Import the Admin page
 
 function App() {
   const [isVerified, setIsVerified] = useState(false);
@@ -18,12 +19,13 @@ function App() {
     if (status === 'true') setIsVerified(true);
   }, []);
 
+  // UPDATED: addToCart now uses _id (MongoDB standard)
   const addToCart = (product) => {
     setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => item._id === product._id);
       if (existing) {
         return prev.map(item => 
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+          item._id === product._id ? { ...item, qty: item.qty + 1 } : item
         );
       }
       return [...prev, { ...product, qty: 1 }];
@@ -31,8 +33,9 @@ function App() {
     setIsCartOpen(true);
   };
 
+  // UPDATED: removeFromCart now uses _id
   const removeFromCart = (id) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+    setCart(prev => prev.filter(item => item._id !== id));
   };
 
   return (
@@ -56,8 +59,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Catalog addToCart={addToCart} />} />
             <Route path="/payment" element={<Payment />} />
-            {/* MATCHED PATH: Ensure this matches the link in your Navbar */}
             <Route path="/contact" element={<Contact />} />
+            
+            {/* NEW ADMIN ROUTE: Your client can access this at /admin */}
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
 

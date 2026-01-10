@@ -2,19 +2,18 @@ import React from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag } from 'lucide-react';
 
 const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
-  // FIXED: No more .replace() needed because item.price is already a number
   const total = cart.reduce((acc, item) => {
     return acc + (item.price * item.qty);
   }, 0);
 
-  // Formats the message for WhatsApp
   const sendWhatsApp = () => {
-    // We use .toLocaleString() here to add commas back for the text message display
     const itemsList = cart.map(item => `- ${item.qty}x ${item.name} (KES ${item.price.toLocaleString()})`).join('\n');
     const message = `*NEW ORDER - PWANI LIQUEUR & VAPES*\n\n*Order Details:*\n${itemsList}\n\n*TOTAL: KES ${total.toLocaleString()}*\n\n_Please confirm delivery location and availability._`;
     
-    // Replace with your actual business number
-    const whatsappUrl = `https://wa.me/254712345678?text=${encodeURIComponent(message)}`;
+    // UPDATED: WhatsApp number set to 254726063889
+    const businessNumber = "254726063889"; 
+    const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
+    
     window.open(whatsappUrl, '_blank');
   };
 
@@ -22,13 +21,11 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
-      {/* Dark Overlay - Clicking this also closes the cart */}
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
         onClick={onClose} 
       />
 
-      {/* Drawer Panel */}
       <div className="relative w-full max-w-md bg-[#0F0F0F] border-l border-[#1F1F1F] h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
         
         {/* Header */}
@@ -42,7 +39,7 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
           </button>
         </div>
 
-        {/* Cart Items List */}
+        {/* Items List */}
         <div className="flex-grow overflow-y-auto p-6 space-y-4">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center">
@@ -55,7 +52,6 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
                 <div className="flex-grow">
                   <h4 className="font-bold text-white uppercase text-xs tracking-tight">{item.name}</h4>
                   <p className="text-[#ECC94B] text-[10px] font-black italic mt-1">
-                    {/* FIXED: Using .toLocaleString() for display only */}
                     {item.qty} x KES {item.price.toLocaleString()}
                   </p>
                 </div>
@@ -70,7 +66,7 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
           )}
         </div>
 
-        {/* Footer with Total and WhatsApp Checkout */}
+        {/* Footer */}
         {cart.length > 0 && (
           <div className="p-8 border-t border-[#1F1F1F] bg-black">
             <div className="flex justify-between items-center mb-6">
