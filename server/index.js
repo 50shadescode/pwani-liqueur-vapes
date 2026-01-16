@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 // Import the Product model
 const Product = require('./models/Product');
