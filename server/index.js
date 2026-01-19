@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 const dotenv = require('dotenv');
 
 // Load environment variables
@@ -54,23 +53,10 @@ app.get('/api/products/category/:cat', async (req, res) => {
   }
 });
 
-// ----------------------------
-// SERVE FRONTEND (PRODUCTION)
-// ----------------------------
-if (process.env.NODE_ENV === "production") {
-  const clientPath = path.join(__dirname, "..", "client", "dist");
-
-  app.use(express.static(clientPath));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(clientPath, "index.html"));
-  });
-} else {
-  // Dev-only root check
-  app.get('/', (req, res) => {
-    res.send("Pwani Liqueur & Vapes API is running...");
-  });
-}
+// API-only server - frontend deployed separately
+app.get('/', (req, res) => {
+  res.send("Pwani Vapes API is running...");
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
