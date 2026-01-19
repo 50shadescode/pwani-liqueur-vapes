@@ -15,23 +15,25 @@ const Catalog = ({ addToCart }) => {
   const categories = ["All", "Vapes"];
 
   // NEW: Fetch data from your Express server
-  useEffect(() => {
-    const fetchCatalog = async () => {
-      try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${apiUrl}/api/products`);
-        if (!response.ok) throw new Error("Failed to load catalog");
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-        setError("Unable to connect to Pwani Servers. Check if backend is running.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCatalog();
-  }, []);
+useEffect(() => {
+  const fetchCatalog = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`
+      );
+      if (!response.ok) throw new Error("Failed to load catalog");
+      const data = await response.json();
+      setProducts(data);
+    } catch (err) {
+      console.error("Fetch Error:", err);
+      setError("Unable to connect to Pwani Servers.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchCatalog();
+}, []);
+
 
   const filteredProducts = products
     .filter(p => (activeCategory === "All" || p.category === activeCategory) && p.name.toLowerCase().includes(searchQuery.toLowerCase()))
