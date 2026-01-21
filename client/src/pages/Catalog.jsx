@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Search, Flame, Star, ArrowUpDown, X, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Catalog = ({ addToCart }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
-  
+
   // NEW: Backend integration states
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,15 +20,17 @@ const Catalog = ({ addToCart }) => {
 useEffect(() => {
   const fetchCatalog = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products`
-      );
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      console.log('Fetching from:', `${apiUrl}/api/products`);
+      const response = await fetch(`${apiUrl}/api/products`);
+      console.log('Response status:', response.status);
       if (!response.ok) throw new Error("Failed to load catalog");
       const data = await response.json();
+      console.log('Received data:', data.length, 'products');
       setProducts(data);
     } catch (err) {
       console.error("Fetch Error:", err);
-      setError("Unable to connect to Pwani Servers.");
+      setError("Unable to connect to Pwani Servers. Check if backend is running.");
     } finally {
       setLoading(false);
     }
@@ -182,9 +186,9 @@ useEffect(() => {
                     </p>
                   </div>
                   
-                  <motion.button 
+                  <motion.button
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => addToCart(product)} 
+                    onClick={() => navigate('/payment')}
                     className="bg-white text-black p-4 rounded-2xl hover:bg-[#ECC94B] transition-all transform shadow-xl"
                   >
                     <ShoppingCart size={20} fill="currentColor" />

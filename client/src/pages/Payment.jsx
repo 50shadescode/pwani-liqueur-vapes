@@ -3,16 +3,20 @@ import { Copy, CheckCircle, Smartphone, ShieldCheck } from 'lucide-react';
 
 const Payment = () => {
   const [copied, setCopied] = useState(false);
-  
-  // PLACEHOLDERS - Change these later
-  const tillNumber = "000000"; 
-  const storeName = "PWANI RETAIL";
+  const [tillData, setTillData] = useState({ tillNumber: "3052763", storeName: "PWANI VAPES" });
+  const [loading, setLoading] = useState(false);
+
+  // Using static till data for now
+
+  const tillNumber = tillData.tillNumber;
+  const storeName = tillData.storeName;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(tillNumber);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
@@ -24,6 +28,7 @@ const Payment = () => {
           Lipa na M-Pesa Instructions
         </p>
       </header>
+
 
       {/* Till Display Card */}
       <div className="bg-[#0F0F0F] border border-[#1F1F1F] rounded-3xl p-8 mb-8 text-center relative overflow-hidden">
