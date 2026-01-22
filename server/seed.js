@@ -114,9 +114,135 @@ const products = [
     image: "https://vapesocietysupplies.com/wp-content/uploads/2025/05/Lost-Mary-MT35K-Turbo-Disposable-_-35K-Puffs-Strawberry.webp",
     desc: "Turbo Strawberry Ice flavor, 35,000 puffs.",
     stock: 8
+  },
+
+  // Adult Toys
+  {
+    name: "Silicone Pleasure Wand",
+    price: 8500,
+    category: "Adult Toys",
+    badge: "Premium",
+    image: "/image.png",
+    desc: "High-quality silicone wand with multiple vibration settings. Waterproof and rechargeable.",
+    stock: 15
+  },
+  {
+    name: "Luxury Rabbit Vibrator",
+    price: 7200,
+    category: "Adult Toys",
+    badge: "Best Seller",
+    image: "/image%20copy.png",
+    desc: "Dual stimulation rabbit vibrator with clitoral and G-spot stimulation. 10 vibration patterns.",
+    stock: 12
+  },
+  {
+    name: "Prostate Massager",
+    price: 6500,
+    category: "Adult Toys",
+    badge: "Popular",
+    image: "/image%20copy%202.png",
+    desc: "Curved prostate massager with remote control. Perfect for solo or partnered play.",
+    stock: 8
+  },
+  {
+    name: "Couples Vibrator Ring",
+    price: 4200,
+    category: "Adult Toys",
+    badge: "New Arrival",
+    image: "/image%20copy%203.png",
+    desc: "Adjustable cock ring vibrator that stimulates both partners. USB rechargeable.",
+    stock: 20
+  },
+  {
+    name: "Anal Beads Set",
+    price: 3800,
+    category: "Adult Toys",
+    badge: "Value",
+    image: "/image%20copy%204.png",
+    desc: "Graduated silicone anal beads for progressive stimulation. Easy retrieval ring.",
+    stock: 18
+  },
+  {
+    name: "Nipple Clamps with Chain",
+    price: 2500,
+    category: "Adult Toys",
+    badge: "Essential",
+    image: "/image%20copy%205.png",
+    desc: "Adjustable nipple clamps connected by chain. Perfect for sensation play.",
+    stock: 25
+  },
+  {
+    name: "Blindfold and Restraints Set",
+    price: 3200,
+    category: "Adult Toys",
+    badge: "Bundle",
+    image: "/image%20copy%206.png",
+    desc: "Complete BDSM starter set with blindfold, wrist cuffs, and ankle cuffs.",
+    stock: 10
+  },
+  {
+    name: "Glass Dildo Set",
+    price: 5800,
+    category: "Adult Toys",
+    badge: "Luxury",
+    image: "/image%20copy%207.png",
+    desc: "Handcrafted borosilicate glass dildos in various sizes. Hypoallergenic and body-safe.",
+    stock: 6
+  },
+  {
+    name: "Lubricant Variety Pack",
+    price: 1800,
+    category: "Adult Toys",
+    badge: "Essential",
+    image: "/image%20copy%208.png",
+    desc: "Set of 3 premium lubricants: water-based, silicone-based, and warming gel.",
+    stock: 30
+  },
+  {
+    name: "Remote Control Egg",
+    price: 4500,
+    category: "Adult Toys",
+    badge: "Fun",
+    image: "/image%20copy%209.png",
+    desc: "Wireless remote controlled vibrating egg. Long range control up to 10 meters.",
+    stock: 14
+  },
+  {
+    name: "Suction Cup Dildo",
+    price: 5200,
+    category: "Adult Toys",
+    badge: "Versatile",
+    image: "/image%20copy%2010.png",
+    desc: "Realistic suction cup dildo. Sticks to any smooth surface for hands-free play.",
+    stock: 11
+  },
+  {
+    name: "Temperature Play Set",
+    price: 3900,
+    category: "Adult Toys",
+    badge: "Adventure",
+    image: "/image%20copy%2011.png",
+    desc: "Ice and wax play set with stainless steel instruments. Safe temperature play guide included.",
+    stock: 9
+  },
+  {
+    name: "Luxury Lingerie Set",
+    price: 6800,
+    category: "Adult Toys",
+    badge: "Sexy",
+    image: "/image%20copy%2012.png",
+    desc: "Complete lingerie set with bra, panties, garter belt, and stockings. Lace and satin.",
+    stock: 7
+  },
+  {
+    name: "Bondage Rope Kit",
+    price: 2900,
+    category: "Adult Toys",
+    badge: "Beginner",
+    image: "/image%20copy%2013.png",
+    desc: "Soft bondage rope with step-by-step tying guide. Perfect for beginners.",
+    stock: 16
   }
-  // Liquor
-  
 ];
 
 const seedDB = async () => {
@@ -131,16 +257,16 @@ const seedDB = async () => {
     // Ensure all products have required fields
     const processedProducts = products.map(product => ({
       ...product,
-      image: product.image && product.image.startsWith('http') && !product.image.includes('placeholder') ? product.image : "https://via.placeholder.com/300x300/cccccc/000000?text=Product",
+      image: product.image || "https://via.placeholder.com/300x300/cccccc/000000?text=Product",
       desc: product.desc || "No description available"
     }));
 
     const insertResult = await Product.insertMany(processedProducts);
-    console.log(`✅ Database Seeded Successfully with ${insertResult.length} Pwani Inventory items!`);
+    console.log(`Database Seeded Successfully with ${insertResult.length} Pwani Inventory items!`);
 
     process.exit();
   } catch (err) {
-    console.error("❌ Seeding Error:", err);
+    console.error("Seeding Error:", err);
     process.exit(1);
   }
 };

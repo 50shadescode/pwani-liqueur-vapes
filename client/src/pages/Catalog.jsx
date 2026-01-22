@@ -14,7 +14,7 @@ const Catalog = ({ addToCart }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const categories = ["All", "Vapes"];
+  const categories = ["All", "Vapes", "Adult Toys"];
 
   // NEW: Fetch data from your Express server
 useEffect(() => {
