@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag } from 'lucide-react';
+import { useCart } from '../../app/context/CartContext';
 
-const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
+const CartDrawer = () => {
+  const { isCartOpen, setIsCartOpen, cart, removeFromCart } = useCart();
   const total = cart.reduce((acc, item) => {
     return acc + (item.price * item.qty);
   }, 0);
@@ -17,13 +21,13 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
     window.open(whatsappUrl, '_blank');
   };
 
-  if (!isOpen) return null;
+  if (!isCartOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
-        onClick={onClose} 
+        onClick={() => setIsCartOpen(false)}
       />
 
       <div className="relative w-full max-w-md bg-[#0F0F0F] border-l border-[#1F1F1F] h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
@@ -34,7 +38,7 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
             <ShoppingBag className="text-[#ECC94B]" size={20} />
             <h2 className="text-xl font-black italic text-white uppercase tracking-tighter">Your Cart</h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-900 rounded-full text-zinc-500 hover:text-white transition-colors">
+          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-zinc-900 rounded-full text-zinc-500 hover:text-white transition-colors">
             <X size={24} />
           </button>
         </div>
@@ -44,7 +48,7 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center">
               <p className="text-zinc-600 uppercase tracking-widest text-[10px] font-bold">Your cart is empty</p>
-              <button onClick={onClose} className="mt-4 text-[#ECC94B] text-xs font-bold uppercase underline">Start Shopping</button>
+              <button onClick={() => setIsCartOpen(false)} className="mt-4 text-[#ECC94B] text-xs font-bold uppercase underline">Start Shopping</button>
             </div>
           ) : (
             cart.map(item => (
@@ -56,7 +60,7 @@ const CartDrawer = ({ isOpen, onClose, cart, onRemove }) => {
                   </p>
                 </div>
                 <button 
-                  onClick={() => onRemove(item.id)} 
+                  onClick={() => removeFromCart(item._id)}
                   className="text-zinc-700 hover:text-red-500 transition-colors self-center p-2"
                 >
                   <Trash2 size={16} />

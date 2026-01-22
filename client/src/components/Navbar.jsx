@@ -1,9 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-// Added Settings for the Admin/Management icon
-import { ShoppingCart, CreditCard, MapPin, LayoutGrid, Settings } from 'lucide-react'; 
+'use client';
 
-const Navbar = ({ cartCount, onCartClick }) => {
+import React from 'react';
+import Link from 'next/link';
+// Added Settings for the Admin/Management icon
+import { ShoppingCart, CreditCard, MapPin, LayoutGrid, Settings } from 'lucide-react';
+import { useCart } from '../../app/context/CartContext';
+
+const Navbar = () => {
+  const { cart, setIsCartOpen } = useCart();
+  const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
   return (
     <nav className="fixed top-0 w-full z-40 bg-black/80 backdrop-blur-md border-b border-zinc-900 px-6 py-2">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -52,8 +57,8 @@ const Navbar = ({ cartCount, onCartClick }) => {
           </Link>
 
           {/* Cart Toggle Button */}
-          <button 
-            onClick={onCartClick} 
+          <button
+            onClick={() => setIsCartOpen(true)}
             className="relative flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-[#ECC94B] transition-colors ml-2"
           >
             <ShoppingCart size={18} />

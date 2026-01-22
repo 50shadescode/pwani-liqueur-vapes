@@ -1,10 +1,46 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ShoppingCart, Search, Flame, Star, ArrowUpDown, X, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from './context/CartContext';
+import Image from 'next/image';
 
-const Catalog = ({ addToCart }) => {
-  const navigate = useNavigate();
+export const metadata = {
+  title: 'Pwani Liquor & Vapes - Premium Vape Products & Adult Toys',
+  description: 'Discover premium vape products and adult toys at Pwani Liquor & Vapes. Shop our curated collection of high-quality vapes, e-liquids, and adult entertainment products with fast delivery.',
+  keywords: 'vapes, e-cigarettes, adult toys, liqueur vapes, premium vapes, Kenya',
+  alternates: {
+    canonical: 'https://pwani-liqueur-vapes.vercel.app',
+  },
+  openGraph: {
+    title: 'Pwani Liquor & Vapes - Premium Vape Products',
+    description: 'Shop premium vape products and adult toys at Pwani Liquor & Vapes. Fast delivery across Kenya.',
+    url: 'https://pwani-liqueur-vapes.vercel.app',
+    siteName: 'Pwani Liquor & Vapes',
+    images: [
+      {
+        url: '/logo.jpeg',
+        width: 1200,
+        height: 630,
+        alt: 'Pwani Liquor & Vapes Logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pwani Liquor & Vapes - Premium Vape Products',
+    description: 'Shop premium vape products and adult toys at Pwani Liquor & Vapes.',
+    images: ['/logo.jpeg'],
+  },
+};
+
+const Catalog = () => {
+  const router = useRouter();
+  const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
@@ -17,26 +53,26 @@ const Catalog = ({ addToCart }) => {
   const categories = ["All", "Vapes", "Adult Toys"];
 
   // NEW: Fetch data from your Express server
-useEffect(() => {
-  const fetchCatalog = async () => {
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      console.log('Fetching from:', `${apiUrl}/api/products`);
-      const response = await fetch(`${apiUrl}/api/products`);
-      console.log('Response status:', response.status);
-      if (!response.ok) throw new Error("Failed to load catalog");
-      const data = await response.json();
-      console.log('Received data:', data.length, 'products');
-      setProducts(data);
-    } catch (err) {
-      console.error("Fetch Error:", err);
-      setError("Unable to connect to Pwani Servers. Check if backend is running.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchCatalog();
-}, []);
+  useEffect(() => {
+    const fetchCatalog = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+        console.log('Fetching from:', `${apiUrl}/api/products`);
+        const response = await fetch(`${apiUrl}/api/products`);
+        console.log('Response status:', response.status);
+        if (!response.ok) throw new Error("Failed to load catalog");
+        const data = await response.json();
+        console.log('Received data:', data.length, 'products');
+        setProducts(data);
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        setError("Unable to connect to Pwani Servers. Check if backend is running.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCatalog();
+  }, []);
 
 
   const filteredProducts = products
@@ -58,7 +94,7 @@ useEffect(() => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       {/* 1. LOCALIZED TRUST SIGNAL */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8 bg-[#ECC94B]/5 border border-[#ECC94B]/20 rounded-2xl p-4 flex items-center justify-between"
@@ -79,11 +115,11 @@ useEffect(() => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="flex-1">
           <h1 className="text-4xl font-black italic text-[#ECC94B] uppercase tracking-tighter mb-6">Live Inventory</h1>
-          
+
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1 group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-[#ECC94B] transition-colors" size={18} />
-              <input 
+              <input
                 type="text"
                 value={searchQuery}
                 placeholder="Search premium spirits & vapes..."
@@ -91,16 +127,16 @@ useEffect(() => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <X 
+                <X
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer hover:text-white" 
-                  size={16} 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer hover:text-white"
+                  size={16}
                 />
               )}
             </div>
 
             <div className="relative">
-              <select 
+              <select
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-[#0F0F0F] border border-[#1F1F1F] text-zinc-400 text-[10px] font-bold uppercase tracking-widest py-4 px-8 rounded-2xl appearance-none focus:outline-none focus:border-[#ECC94B] cursor-pointer transition-all pr-12"
               >
@@ -119,8 +155,8 @@ useEffect(() => {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                activeCategory === cat 
-                ? "bg-[#ECC94B] text-black border-[#ECC94B] shadow-[0_0_20px_rgba(236,201,75,0.2)]" 
+                activeCategory === cat
+                ? "bg-[#ECC94B] text-black border-[#ECC94B] shadow-[0_0_20px_rgba(236,201,75,0.2)]"
                 : "bg-transparent text-zinc-500 border-[#1F1F1F] hover:border-zinc-700 hover:text-white"
               }`}
             >
@@ -134,7 +170,7 @@ useEffect(() => {
       <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence mode='popLayout'>
           {filteredProducts.map((product, index) => (
-            <motion.div 
+            <motion.div
               layout
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,12 +186,13 @@ useEffect(() => {
                     <span className="text-[9px] font-black uppercase tracking-tighter text-white">{product.badge}</span>
                   </div>
                 )}
-                <motion.img 
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ duration: 0.6 }}
-                  src={product.image} 
-                  alt={product.name} 
-                  className="max-h-full max-w-full object-contain opacity-90 transition-all" 
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className="max-h-full max-w-full object-contain opacity-90 transition-all"
+                  priority={index < 6} // Prioritize first 6 images
                 />
               </div>
 
@@ -168,15 +205,15 @@ useEffect(() => {
                     ))}
                   </div>
                 </div>
-                
+
                 <h3 className="text-xl font-bold text-white uppercase tracking-tight leading-tight mb-2 group-hover:text-[#ECC94B] transition-colors">
                   {product.name}
                 </h3>
-                
+
                 <p className="text-zinc-500 text-[10px] font-medium leading-relaxed uppercase tracking-wide mb-6 flex-grow">
                   {product.desc}
                 </p>
-                
+
                 <div className="pt-4 border-t border-zinc-900 flex justify-between items-center mt-auto">
                   <div>
                     <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest mb-1">Price</p>
@@ -185,10 +222,10 @@ useEffect(() => {
                       {product.price.toLocaleString()}
                     </p>
                   </div>
-                  
+
                   <motion.button
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => navigate('/payment')}
+                    onClick={() => addToCart(product)}
                     className="bg-white text-black p-4 rounded-2xl hover:bg-[#ECC94B] transition-all transform shadow-xl"
                   >
                     <ShoppingCart size={20} fill="currentColor" />
@@ -199,7 +236,7 @@ useEffect(() => {
           ))}
         </AnimatePresence>
       </motion.div>
-      
+
       {/* Testimonials section remains the same... */}
     </div>
   );
