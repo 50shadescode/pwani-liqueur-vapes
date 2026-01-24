@@ -3,37 +3,6 @@
 import React, { useState } from 'react';
 import { Copy, CheckCircle, Smartphone, ShieldCheck } from 'lucide-react';
 
-export const metadata = {
-  title: 'Payment - Pwani Liquor & Vapes | Secure M-Pesa Payment',
-  description: 'Complete your order with secure M-Pesa payment at Pwani Liquor & Vapes. Easy and fast payment process for vape products and adult toys.',
-  keywords: 'payment Pwani Liquor Vapes, M-Pesa payment, secure payment Kenya',
-  alternates: {
-    canonical: 'https://pwani-liqueur-vapes.vercel.app/payment',
-  },
-  openGraph: {
-    title: 'Secure Payment - Pwani Liquor & Vapes',
-    description: 'Pay securely with M-Pesa for your vape products and adult toys.',
-    url: 'https://pwani-liqueur-vapes.vercel.app/payment',
-    siteName: 'Pwani Liquor & Vapes',
-    images: [
-      {
-        url: '/logo.jpeg',
-        width: 1200,
-        height: 630,
-        alt: 'Pwani Liquor & Vapes Payment',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Secure Payment - Pwani Liquor & Vapes',
-    description: 'Complete your order with M-Pesa payment.',
-    images: ['/logo.jpeg'],
-  },
-};
-
 const Payment = () => {
   const [copied, setCopied] = useState(false);
   const [tillData, setTillData] = useState({ tillNumber: "3052763", storeName: "PWANI VAPES" });

@@ -25,9 +25,8 @@ const Page = () => {
   useEffect(() => {
     const fetchCatalog = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-        console.log('Fetching from:', `${apiUrl}/api/products`);
-        const response = await fetch(`${apiUrl}/api/products`);
+        console.log('Fetching from:', `/api/products`);
+        const response = await fetch(`/api/products`);
         console.log('Response status:', response.status);
         if (!response.ok) throw new Error("Failed to load catalog");
         const data = await response.json();

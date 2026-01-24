@@ -4,12 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { PackagePlus, Loader2, CheckCircle, Image as ImageIcon, Tag, Hash, Lock, Unlock, AlertCircle, Trash2, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const metadata = {
-  title: 'Admin Panel - Pwani Liquor & Vapes',
-  description: 'Manage products and inventory for Pwani Liquor & Vapes.',
-  robots: 'noindex, nofollow',
-};
-
 const Admin = () => {
   // --- SECURITY STATES ---
   const [password, setPassword] = useState("");
@@ -40,7 +34,7 @@ const Admin = () => {
     e.preventDefault();
     setStatus('loading');
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/products`, {
+      const response = await fetch(`/api/products`, {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,7 +59,7 @@ const Admin = () => {
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/products`);
+      const response = await fetch(`/api/products`);
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -86,7 +80,7 @@ const Admin = () => {
   const deleteProduct = async (id) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/products/${id}`, {
+      const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
