@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'], // Add your image domains here
+    domains: ['localhost', 'glovo.dhmedia.io', 'res.cloudinary.com', 'cdn.shopify.com', 'cdn.vapeclub.co.uk', 'vapesocietysupplies.com', 'vaporboss.com'], // Add your image domains here
   },
   // Add caching headers
   async headers() {

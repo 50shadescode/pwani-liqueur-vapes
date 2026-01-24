@@ -7,38 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from './context/CartContext';
 import Image from 'next/image';
 
-export const metadata = {
-  title: 'Pwani Liquor & Vapes - Premium Vape Products & Adult Toys',
-  description: 'Discover premium vape products and adult toys at Pwani Liquor & Vapes. Shop our curated collection of high-quality vapes, e-liquids, and adult entertainment products with fast delivery.',
-  keywords: 'vapes, e-cigarettes, adult toys, liqueur vapes, premium vapes, Kenya',
-  alternates: {
-    canonical: 'https://pwani-liqueur-vapes.vercel.app',
-  },
-  openGraph: {
-    title: 'Pwani Liquor & Vapes - Premium Vape Products',
-    description: 'Shop premium vape products and adult toys at Pwani Liquor & Vapes. Fast delivery across Kenya.',
-    url: 'https://pwani-liqueur-vapes.vercel.app',
-    siteName: 'Pwani Liquor & Vapes',
-    images: [
-      {
-        url: '/logo.jpeg',
-        width: 1200,
-        height: 630,
-        alt: 'Pwani Liquor & Vapes Logo',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Pwani Liquor & Vapes - Premium Vape Products',
-    description: 'Shop premium vape products and adult toys at Pwani Liquor & Vapes.',
-    images: ['/logo.jpeg'],
-  },
-};
-
-const Catalog = () => {
+const Page = () => {
   const router = useRouter();
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
@@ -242,4 +211,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default Page;

@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -10,7 +11,7 @@ export default {
         gold: {
           400: '#F6E05E',
           500: '#ECC94B',
-          600: '#D69E2E', 
+          600: '#D69E2E',
         },
         dark: {
           DEFAULT: '#050505',
