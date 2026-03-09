@@ -1,22 +1,32 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { PackagePlus, Loader2, CheckCircle, Image as ImageIcon, Tag, Hash, Lock, Unlock, AlertCircle, Trash2, RefreshCw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  PackagePlus,
+  Loader2,
+  CheckCircle,
+  Lock,
+  Trash2,
+  RefreshCw,
+} from 'lucide-react';
 
 const Admin = () => {
-  // --- SECURITY STATES ---
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const MASTER_PASSWORD = "PWANI2026"; // Secure code for your client
+  const MASTER_PASSWORD = 'PWANI2026';
 
-  // --- FORM STATES ---
   const [formData, setFormData] = useState({
-    name: '', price: '', category: 'Liquor', badge: '', image: '', desc: '', rating: 5, stock: 10
+    name: '',
+    price: '',
+    category: 'Liquor',
+    badge: '',
+    image: '',
+    desc: '',
+    rating: 5,
+    stock: 10,
   });
   const [status, setStatus] = useState('idle');
 
-  // --- PRODUCTS MANAGEMENT ---
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
 
@@ -25,41 +35,15 @@ const Admin = () => {
     if (password === MASTER_PASSWORD) {
       setIsAuthorized(true);
     } else {
-      alert("Unauthorized: Incorrect Access Code.");
-      setPassword("");
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-    try {
-      const response = await fetch(`/api/products`, {
-
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', price: '', category: 'Liquor', badge: '', image: '', desc: '', rating: 5, stock: 10 });
-        fetchProducts(); // Refresh the products list
-        setTimeout(() => setStatus('idle'), 3000);
-      } else {
-        throw new Error('Failed to add product');
-      }
-    } catch (err) {
-      console.error('Error adding product:', err);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
+      alert('Unauthorized: Incorrect Access Code.');
+      setPassword('');
     }
   };
 
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
-      const response = await fetch(`/api/products`);
+      const response = await fetch('/api/products');
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -77,12 +61,49 @@ const Admin = () => {
     }
   }, [isAuthorized]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add product');
+      }
+
+      setStatus('success');
+      setFormData({
+        name: '',
+        price: '',
+        category: 'Liquor',
+        badge: '',
+        image: '',
+        desc: '',
+        rating: 5,
+        stock: 10,
+      });
+      fetchProducts();
+      setTimeout(() => setStatus('idle'), 3000);
+    } catch (err) {
+      console.error('Error adding product:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
+
   const deleteProduct = async (id) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
+
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
       });
+
       if (response.ok) {
         fetchProducts();
       }
@@ -94,15 +115,15 @@ const Admin = () => {
   if (!isAuthorized) {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-[#0F0F0F] border border-[#1F1F1F] rounded-3xl p-8 w-full max-w-md"
-        >
+        <div className="bg-[#0F0F0F] border border-[#1F1F1F] rounded-3xl p-8 w-full max-w-md">
           <div className="text-center mb-8">
             <Lock className="mx-auto mb-4 text-[#ECC94B]" size={48} />
-            <h1 className="text-2xl font-black text-white uppercase tracking-tighter">Admin Access</h1>
-            <p className="text-zinc-500 text-sm mt-2">Enter access code to continue</p>
+            <h1 className="text-2xl font-black text-white uppercase tracking-tighter">
+              Admin Access
+            </h1>
+            <p className="text-zinc-500 text-sm mt-2">
+              Enter access code to continue
+            </p>
           </div>
 
           <form onSubmit={handleLogin}>
@@ -121,7 +142,7 @@ const Admin = () => {
               Unlock Panel
             </button>
           </form>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -138,7 +159,6 @@ const Admin = () => {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Add Product Form */}
         <div className="bg-[#0F0F0F] border border-[#1F1F1F] rounded-3xl p-8">
           <h2 className="text-[#ECC94B] font-black uppercase tracking-widest text-lg mb-8 border-b border-zinc-900 pb-4">
             Add New Product
@@ -150,7 +170,9 @@ const Admin = () => {
                 type="text"
                 placeholder="Product Name"
                 value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className="bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ECC94B]"
                 required
               />
@@ -158,7 +180,12 @@ const Admin = () => {
                 type="number"
                 placeholder="Price (KES)"
                 value={formData.price}
-                onChange={(e) => setFormData({...formData, price: parseInt(e.target.value)})}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    price: parseInt(e.target.value, 10) || '',
+                  })
+                }
                 className="bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ECC94B]"
                 required
               />
@@ -166,7 +193,9 @@ const Admin = () => {
 
             <select
               value={formData.category}
-              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
               className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-[#ECC94B]"
             >
               <option value="Vapes">Vapes</option>
@@ -177,7 +206,9 @@ const Admin = () => {
               type="text"
               placeholder="Badge (optional)"
               value={formData.badge}
-              onChange={(e) => setFormData({...formData, badge: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, badge: e.target.value })
+              }
               className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ECC94B]"
             />
 
@@ -185,7 +216,9 @@ const Admin = () => {
               type="url"
               placeholder="Image URL"
               value={formData.image}
-              onChange={(e) => setFormData({...formData, image: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, image: e.target.value })
+              }
               className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ECC94B]"
               required
             />
@@ -193,7 +226,9 @@ const Admin = () => {
             <textarea
               placeholder="Description"
               value={formData.desc}
-              onChange={(e) => setFormData({...formData, desc: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, desc: e.target.value })
+              }
               className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ECC94B] h-24 resize-none"
               required
             />
@@ -223,7 +258,6 @@ const Admin = () => {
           </form>
         </div>
 
-        {/* Products List */}
         <div className="bg-[#0F0F0F] border border-[#1F1F1F] rounded-3xl p-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-[#ECC94B] font-black uppercase tracking-widest text-lg">
@@ -234,29 +268,47 @@ const Admin = () => {
               disabled={loadingProducts}
               className="p-2 hover:bg-zinc-800 rounded-full transition-colors text-[#ECC94B] disabled:opacity-50"
             >
-              <RefreshCw size={20} className={loadingProducts ? 'animate-spin' : ''} />
+              <RefreshCw
+                size={20}
+                className={loadingProducts ? 'animate-spin' : ''}
+              />
             </button>
           </div>
 
           <div className="space-y-4 max-h-96 overflow-y-auto">
             {loadingProducts ? (
               <div className="text-center py-8">
-                <Loader2 size={32} className="animate-spin mx-auto mb-4 text-[#ECC94B]" />
+                <Loader2
+                  size={32}
+                  className="animate-spin mx-auto mb-4 text-[#ECC94B]"
+                />
                 <p className="text-zinc-500">Loading products...</p>
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-8">
-                <PackagePlus size={48} className="mx-auto mb-4 text-zinc-600" />
+                <PackagePlus
+                  size={48}
+                  className="mx-auto mb-4 text-zinc-600"
+                />
                 <p className="text-zinc-500">No products found</p>
               </div>
             ) : (
               products.map((product) => (
-                <div key={product._id} className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+                <div
+                  key={product._id}
+                  className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between"
+                >
                   <div className="flex items-center gap-4">
-                    <img src={product.image} alt={product.name} className="w-12 h-12 rounded-lg object-cover" />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
                     <div>
                       <p className="text-white font-bold">{product.name}</p>
-                      <p className="text-zinc-500 text-sm">KES {product.price.toLocaleString()}</p>
+                      <p className="text-zinc-500 text-sm">
+                        KES {product.price.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                   <button

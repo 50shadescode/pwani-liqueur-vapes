@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CartProvider } from './context/CartContext';
 import AgeGate from '../src/components/AgeGate';
 import Navbar from '../src/components/Navbar';
@@ -9,12 +9,10 @@ import CartDrawer from '../src/components/CartDrawer';
 import WhatsAppFloat from '../src/components/WhatsAppFloat';
 
 export default function ClientLayout({ children }) {
-  const [isVerified, setIsVerified] = useState(false);
-
-  useEffect(() => {
-    const status = localStorage.getItem('pwani_age_verified');
-    if (status === 'true') setIsVerified(true);
-  }, []);
+  const [isVerified, setIsVerified] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('pwani_age_verified') === 'true';
+  });
 
   return (
     <CartProvider>

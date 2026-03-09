@@ -1,10 +1,14 @@
 export default async function sitemap() {
   const baseUrl = 'https://pwani-liqueur-vapes.vercel.app';
 
-  // Fetch products for dynamic URLs if needed
   let products = [];
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/products`);
+    const apiBase =
+      globalThis?.process?.env?.NEXT_PUBLIC_API_URL || '';
+
+    const response = await fetch(`${apiBase}/api/products`);
+
     if (response.ok) {
       products = await response.json();
     }
@@ -12,7 +16,6 @@ export default async function sitemap() {
     console.error('Error fetching products for sitemap:', error);
   }
 
-  // Static pages
   const staticPages = [
     {
       url: baseUrl,
@@ -34,7 +37,6 @@ export default async function sitemap() {
     },
   ];
 
-  // Dynamic product pages (if you have individual product pages)
   const productPages = products.map((product) => ({
     url: `${baseUrl}/product/${product._id}`,
     lastModified: new Date(),

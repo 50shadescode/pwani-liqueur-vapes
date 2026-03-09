@@ -1,10 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
 import './globals.css';
 import ClientLayout from './ClientLayout';
 
 export const metadata = {
   title: 'Pwani Liquor & Vapes - Premium Vape Products & Adult Toys',
-  description: 'Discover premium vape products and adult toys at Pwani Liquor & Vapes. Shop our curated collection with fast delivery in Mombasa.',
-  keywords: 'vapes, e-cigarettes, adult toys, liqueur vapes, premium vapes, Mombasa, Kenya',
+  description:
+    'Discover premium vape products and adult toys at Pwani Liquor & Vapes. Shop our curated collection with fast delivery in Mombasa.',
+  keywords:
+    'vapes, e-cigarettes, adult toys, liqueur vapes, premium vapes, Mombasa, Kenya',
   authors: [{ name: 'Pwani Liquor & Vapes' }],
   robots: 'index, follow',
   icons: {
@@ -12,7 +15,8 @@ export const metadata = {
   },
   openGraph: {
     title: 'Pwani Liquor & Vapes - Premium Vape Products',
-    description: 'Shop premium vape products and adult toys with fast delivery in Mombasa.',
+    description:
+      'Shop premium vape products and adult toys with fast delivery in Mombasa.',
     url: 'https://pwani-liqueur-vapes.vercel.app',
     siteName: 'Pwani Liquor & Vapes',
     images: [
@@ -33,7 +37,7 @@ export const metadata = {
     images: ['/logo.jpeg'],
   },
   verification: {
-    google: 'your-google-site-verification-code', // Replace with actual code
+    google: 'your-google-site-verification-code',
   },
 };
 
