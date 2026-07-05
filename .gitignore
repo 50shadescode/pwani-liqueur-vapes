@@ -2,3 +2,7 @@ node_modules/
 .env
 .DS_Store
 client/.next/
+
+# Ignore Next.js build directories
+client/.next/
+client-backup/.next/
